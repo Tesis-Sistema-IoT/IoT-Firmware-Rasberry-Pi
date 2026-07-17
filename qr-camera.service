@@ -1,0 +1,37 @@
+[Unit]
+Description=QR Camera YOLO Production Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/yolo
+EnvironmentFile=/etc/qr-camera.env
+
+ExecStart=/home/pi/yolo/run_qr.sh
+
+Restart=always
+RestartSec=3
+
+# Más prioridad para tu servicio
+Nice=-10
+CPUWeight=10000
+IOWeight=10000
+
+# Sin límites artificiales
+CPUQuota=
+MemoryMax=
+TasksMax=infinity
+LimitNOFILE=1048576
+
+# Menos probabilidad de que Linux mate este proceso si hay presión de memoria
+OOMScoreAdjust=-800
+
+# Logs en journalctl
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
